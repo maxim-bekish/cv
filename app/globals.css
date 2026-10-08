@@ -1,6 +1,208 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
+/* ── Цвета: значения ──────────────────────────────── */
+:root {
+	/* основные (тёмная тема по умолчанию) */
+	--bg: #0b0b0b;
+	--bg-raised: #151515;
+	--ink: #f2eee6;
+	--ink-muted: #9c978f;
+	--line: rgb(242 238 230 / 0.16);
+
+	/* акцент — меняется кнопкой «Дизайн» */
+	--accent: var(--preset-orange);
+	--accent-deep: color-mix(in srgb, var(--accent) 52%, #000);
+	--on-accent: #0b0b0b;
+
+	/* тёмные секции: одинаковые в обеих темах */
+	--night-bg: #0b0b0b;
+	--night-raised: #151515;
+	--night-ink: #f2eee6;
+	--night-soft: #c9c4ba;
+	--night-muted: #9c978f;
+	--night-line: rgb(242 238 230 / 0.16);
+
+	/* клавиша Enter */
+	--key-top: #2a2a2a;
+	--key-bottom: #161616;
+
+	/* пресеты для кнопки «Дизайн»: JS ставит --accent: var(--preset-*) */
+	--preset-orange: #ff7a35;
+	--preset-lime: #c6f432;
+	--preset-sky: #4cc9f0;
+	--preset-pink: #ff5ca8;
+	--preset-yellow: #ffd23f;
+	--preset-lilac: #a78bfa;
+	--preset-red: #ff4433;
+	--preset-mint: #3ddc97;
+
+	color-scheme: dark;
+}
+
+/* светлая тема: по системной настройке или принудительно */
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme='dark']) {
+		--bg: #f2eee6;
+		--bg-raised: #e7e2d8;
+		--ink: #0b0b0b;
+		--ink-muted: #5e5a53;
+		--line: rgb(11 11 11 / 0.16);
+		color-scheme: light;
+	}
+}
+
+[data-theme='light'] {
+	--bg: #f2eee6;
+	--bg-raised: #e7e2d8;
+	--ink: #0b0b0b;
+	--ink-muted: #5e5a53;
+	--line: rgb(11 11 11 / 0.16);
+	color-scheme: light;
+}
+
+/* ── Tailwind: утилиты из переменных ──────────────── */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+	/* убираем стандартные палитру и шрифты Tailwind — доступны только токены ниже */
+	--color-*: initial;
+	--font-*: initial;
+
+	--font-display: var(--font-unbounded), 'Arial Black', sans-serif;
+	--font-sans: var(--font-onest), 'Segoe UI', system-ui, -apple-system, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+	--color-bg: var(--bg);
+	--color-bg-raised: var(--bg-raised);
+	--color-ink: var(--ink);
+	--color-ink-muted: var(--ink-muted);
+	--color-line: var(--line);
+
+	--color-accent: var(--accent);
+	--color-accent-deep: var(--accent-deep);
+	--color-on-accent: var(--on-accent);
+
+	--color-night-bg: var(--night-bg);
+	--color-night-raised: var(--night-raised);
+	--color-night-ink: var(--night-ink);
+	--color-night-soft: var(--night-soft);
+	--color-night-muted: var(--night-muted);
+	--color-night-line: var(--night-line);
+
+	--color-key-top: var(--key-top);
+	--color-key-bottom: var(--key-bottom);
+
+	/* пресеты для кнопки «Дизайн» */
+	--color-preset-orange: var(--preset-orange);
+	--color-preset-lime: var(--preset-lime);
+	--color-preset-sky: var(--preset-sky);
+	--color-preset-pink: var(--preset-pink);
+	--color-preset-yellow: var(--preset-yellow);
+	--color-preset-lilac: var(--preset-lilac);
+	--color-preset-red: var(--preset-red);
+	--color-preset-mint: var(--preset-mint);
+}
+
+@layer base {
+	body {
+		background: var(--bg);
+		color: var(--ink);
+	}
+}
+@theme {
+	--breakpoint-xs: 32.5625rem; /* 521px */
+	--breakpoint-tab: 53.8125rem; /* 861px */
+
+	/* убираем стандартные text-xs…text-9xl — доступны только размеры ниже */
+	--text-*: initial;
+
+	/* падающие буквы имени */
+	--text-hero-letter: clamp(30px, 10vw, 188px);
+	--text-hero-letter--line-height: 0.8;
+	--text-hero-letter--letter-spacing: -0.04em;
+	--text-hero-letter--font-weight: 500;
+
+	/* заголовок кейса, «Игры» */
+	--text-display: clamp(48px, 10.5vw, 160px);
+	--text-display--line-height: 0.88;
+	--text-display--letter-spacing: -0.065em;
+	--text-display--font-weight: 400;
+
+	/* заголовки разделов */
+	--text-section: clamp(40px, 6.4vw, 92px);
+	--text-section--line-height: 0.98;
+	--text-section--letter-spacing: -0.045em;
+	--text-section--font-weight: 400;
+
+	/* слоган в hero */
+	--text-hero: clamp(34px, 5.2vw, 80px);
+	--text-hero--line-height: 0.98;
+	--text-hero--letter-spacing: -0.055em;
+	--text-hero--font-weight: 400;
+
+	/* цифры-счётчики */
+	--text-stat: clamp(44px, 6vw, 88px);
+	--text-stat--line-height: 1;
+	--text-stat--letter-spacing: -0.05em;
+	--text-stat--font-weight: 400;
+
+	/* крупный абзац, подзаголовки */
+	--text-lead: clamp(20px, 2.4vw, 32px);
+	--text-lead--line-height: 1.35;
+	--text-lead--letter-spacing: -0.03em;
+	--text-lead--font-weight: 300;
+
+	/* заголовки карточек, пункты «Что умею» */
+	--text-title: clamp(18px, 2.2vw, 30px);
+	--text-title--line-height: 1.1;
+	--text-title--letter-spacing: -0.04em;
+	--text-title--font-weight: 400;
+
+	/* подписи, кнопки, теги — капсом */
+	--text-caps: 12px;
+	--text-caps--line-height: 1.5;
+	--text-caps--letter-spacing: 0.02em;
+	--text-caps--font-weight: 400;
+
+	/* основной текст */
+	--text-body: 17px;
+	--text-body--line-height: 1.6;
+	--text-body--font-weight: 400;
+
+	/* описания, мета */
+	--text-body-sm: 15px;
+	--text-body-sm--line-height: 1.5;
+	--text-body-sm--font-weight: 400;
+
+	/* терминал */
+	--text-terminal: clamp(13px, 1.35vw, 16px);
+	--text-terminal--line-height: 1.7;
+	--text-terminal--font-weight: 400;
+
+	--section-y: clamp(80px, 11vw, 150px);
+
+	/* бегущая строка: каждая копия списка уезжает на свою ширину */
+	--animate-marquee: marquee 30s linear infinite;
+
+	@keyframes marquee {
+		to {
+			transform: translateX(-100%);
+		}
+	}
+}
+
+.wrapper-xl {
+	@apply mx-auto max-w-[1920px] px-3 md:px-7 lg:px-10 ;
+}
+
+@utility bg-hero-glow {
+	background-image:
+		radial-gradient(
+			90% 70% at 70% 20%,
+			color-mix(in oklab, var(--accent) 16%, transparent),
+			transparent 60%
+		),
+		radial-gradient(
+			60% 60% at 10% 90%,
+			color-mix(in oklab, var(--night-ink) 6%, transparent),
+			transparent 70%
+		);
 }
