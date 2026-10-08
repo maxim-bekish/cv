@@ -1,29 +1,34 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Unbounded, Onest } from 'next/font/google';
+import './globals.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const unbounded = Unbounded({
+	subsets: ['latin', 'cyrillic'],
+	weight: ['300', '400', '500', '600'],
+	variable: '--font-unbounded',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const onest = Onest({
+	subsets: ['latin', 'cyrillic'],
+	weight: ['400', '500'],
+	variable: '--font-onest',
 });
 
 export const metadata: Metadata = {
-  title: "CV",
-  description: "",
+	title: 'Максим Бекиш — фронтенд-разработчик',
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
-  return (
-    <html
-      lang="ru"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="flex min-h-full flex-col">{children}</body>
-    </html>
-  );
+export default function RootLayout({ children }: LayoutProps<'/'>) {
+	return (
+		<html lang='ru' className={`${unbounded.variable} ${onest.variable}`}>
+			{/* relative — для фонов диалогов в iOS 26+ Safari (см. Base UI: Set up) */}
+			<body className='relative font-sans text-body'>
+				{/* isolate — отдельный контекст наложения: попапы Base UI в порталах всегда поверх страницы */}
+				{/* id='app' — сюда портируется бургер-меню, чтобы шапка (z-40) была над ним */}
+				<div id='app' className='isolate flex flex-col min-h-svh'>
+					{children}
+				</div>
+			</body>
+		</html>
+	);
 }
