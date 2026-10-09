@@ -49,7 +49,7 @@ export default function DesignPopover() {
 			/>
 			<Popover.Portal>
 				<Popover.Positioner sideOffset={8}>
-					<Popover.Popup className='   w-[min(320px,calc(100vw-32px))] origin-top-right border border-night-line bg-night-raised p-5 text-night-ink shadow-pop transition-[opacity,translate,scale] duration-300 ease-soft [[hidden]]:pointer-events-none [[hidden]]:invisible [[hidden]]:block [[hidden]]:-translate-y-2 [[hidden]]:scale-96 [[hidden]]:opacity-0'>
+					<Popover.Popup className='w-[min(320px,calc(100vw-32px))] origin-top-right border border-night-line bg-night-raised p-5 text-night-ink transition-[opacity,translate,scale] duration-300 [[hidden]]:pointer-events-none [[hidden]]:invisible [[hidden]]:block [[hidden]]:-translate-y-2 [[hidden]]:scale-96 [[hidden]]:opacity-0'>
 						<Text className='mb-1' variant='title'>
 							Главный Цвет
 						</Text>

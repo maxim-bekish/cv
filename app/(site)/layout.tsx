@@ -6,7 +6,7 @@ export default function SiteLayout({ children }: LayoutProps<'/'>) {
 	return (
 		<React.Fragment>
 			<Header />
-			{children}
+			<main className='flex-1'>{children}</main>
 			<Footer />
 		</React.Fragment>
 	);
