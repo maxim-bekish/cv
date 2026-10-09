@@ -1,29 +1,31 @@
 import { Button } from '@/components/ui/Button';
 import { Text } from '@/components/ui/Text';
 import { ArrowDown, RotateCcw } from 'lucide-react';
+import Badge from '../ui/Badge';
 
 export default function Hero() {
 	return (
-		<section className='relative pt-25 max-h-300 h-svh before:pointer-events-none before:absolute before:inset-0 before:bg-hero-glow '>
+		<section className='relative pt-25 max-h-300 h-svh  '>
 			<div className='wrapper-xl flex justify-between'>
 				<div className='flex flex-col '>
 					<Text variant='hero'>
-						Делаю <br /> интерфейсы,
+						Делаю
+						<br /> интерфейсы,
 						<br /> которые
 						<br /> хочется
 						<br />
 						<em className='not-italic text-accent'>потрогать</em>
 					</Text>
 					<div className='flex mt-[clamp(18px,2.4vw,28px)] flex-wrap items-center gap-2.5 '>
-						<span className='inline-flex items-center gap-2 rounded-full border border-accent/60 px-3 py-1.5 font-display text-caps uppercase text-night-ink before:size-[7px] before:rounded-full before:bg-accent before:animate-ping-dot motion-reduce:before:animate-none'>
+						<Badge size='md' variant='pulse'>
 							Открыт к работе
-						</span>
-						<span className='rounded-full border border-night-ink/30 px-3 py-1.5 font-display text-caps uppercase text-night-soft'>
+						</Badge>
+						<Badge size='md' variant='default'>
 							Vue 3 · Nuxt · TypeScript
-						</span>
-						<span className='rounded-full border border-night-ink/30 px-3 py-1.5 font-display text-caps uppercase text-night-soft'>
+						</Badge>
+						<Badge size='md' variant='default'>
 							Минск / удалённо
-						</span>
+						</Badge>
 					</div>
 				</div>
 				<div className=' flex-col gap-4 hidden max-w-[340px] text-right tab:flex'>
@@ -32,7 +34,10 @@ export default function Hero() {
 						на Vue, Nuxt и TypeScript от макета до продакшена.
 					</Text>
 
-					<Button className='ml-auto' aria-label='Сменить акцентный цвет'>
+					<Button
+						className='ml-auto'
+						render={<a href='#contacts' />}
+						nativeButton={false}>
 						Написать мне
 					</Button>
 				</div>
@@ -46,17 +51,15 @@ export default function Hero() {
 
 			<div className='absolute bottom-0 w-full border-t border-night-ink/25'>
 				<div className='wrapper-xl  flex  py-3  items-center justify-between gap-3   '>
-					<Button variant='ghost' aria-label='Сменить акцентный цвет'>
+					<Button variant='ghost'>
 						<RotateCcw />
 						Собрать заново
 					</Button>
-					<Button variant='ghost' aria-label='Сменить акцентный цвет'>
+					<Button variant='ghost' render={<a href='#about' />} nativeButton={false}>
 						<ArrowDown />
 						Листать вниз
 					</Button>
-					<Button variant='ghost' aria-label='Сменить акцентный цвет'>
-						Открыт к предложениям
-					</Button>
+					<Button variant='ghost'>Открыт к предложениям</Button>
 				</div>
 			</div>
 		</section>

@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* в документации есть примеры запрещённых классов — не генерируем их */
+@source not '../AGENTS.md';
+
 /* ── Цвета: значения ──────────────────────────────── */
 :root {
 	/* основные (тёмная тема по умолчанию) */
@@ -12,11 +15,14 @@
 	/* акцент — меняется кнопкой «Дизайн» */
 	--accent: var(--preset-orange);
 	--accent-deep: color-mix(in srgb, var(--accent) 52%, #000);
+	/* ползунок скроллбара: акцент и чёрный 1:1 */
+	--accent-shade: color-mix(in srgb, var(--accent) 50%, #000);
 	--on-accent: #0b0b0b;
 
 	/* тёмные секции: одинаковые в обеих темах */
 	--night-bg: #0b0b0b;
 	--night-raised: #151515;
+	--night-deep: #050505;
 	--night-ink: #f2eee6;
 	--night-soft: #c9c4ba;
 	--night-muted: #9c978f;
@@ -78,10 +84,12 @@
 
 	--color-accent: var(--accent);
 	--color-accent-deep: var(--accent-deep);
+	--color-accent-shade: var(--accent-shade);
 	--color-on-accent: var(--on-accent);
 
 	--color-night-bg: var(--night-bg);
 	--color-night-raised: var(--night-raised);
+	--color-night-deep: var(--night-deep);
 	--color-night-ink: var(--night-ink);
 	--color-night-soft: var(--night-soft);
 	--color-night-muted: var(--night-muted);
@@ -187,10 +195,27 @@
 			transform: translateX(-100%);
 		}
 	}
+
+	/* точка в бейдже: пульсирует ореолом и слегка «дышит» */
+	--animate-ping-dot: ping-dot 1.6s ease-out infinite;
+
+	@keyframes ping-dot {
+		0% {
+			transform: scale(1);
+			box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-accent) 60%, transparent);
+		}
+		50% {
+			transform: scale(1.15);
+		}
+		100% {
+			transform: scale(1);
+			box-shadow: 0 0 0 8px transparent;
+		}
+	}
 }
 
 .wrapper-xl {
-	@apply mx-auto max-w-[1920px] px-3 md:px-7 lg:px-10 ;
+	@apply mx-auto max-w-[1920px] px-3 md:px-7 lg:px-10;
 }
 
 @utility bg-hero-glow {
@@ -205,4 +230,54 @@
 			color-mix(in oklab, var(--night-ink) 6%, transparent),
 			transparent 70%
 		);
+}
+
+/* прячем нативный скроллбар: он отъедает ширину у страницы, и справа остаётся полоса.
+   Вместо него рисуем свой поверх контента — components/ui/Scrollbar.tsx */
+@utility scrollbar {
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+/* объёмная карточка: «торец» и тень уходят в сторону, противоположную наклону.
+   --rx / --ry — текущие углы в градусах без единиц, их ставит useTilt */
+@utility shadow-extrude {
+	--sx: calc(var(--ry, -14) / -14 * 1px);
+	--sy: calc(var(--rx, 8) / 8 * 1px);
+	box-shadow:
+		calc(var(--sx) * 1) calc(var(--sy) * 1) 0 var(--accent),
+		calc(var(--sx) * 2) calc(var(--sy) * 2) 0 var(--accent),
+		calc(var(--sx) * 3) calc(var(--sy) * 3) 0 var(--accent-deep),
+		calc(var(--sx) * 4) calc(var(--sy) * 4) 0 var(--accent-deep),
+		calc(var(--sx) * 5) calc(var(--sy) * 5) 0 var(--accent-deep),
+		calc(var(--sx) * 6) calc(var(--sy) * 6) 0 var(--accent-deep),
+		calc(var(--sx) * 7) calc(var(--sy) * 7) 0 var(--accent-deep),
+		calc(var(--sx) * 8) calc(var(--sy) * 8) 0 var(--accent-deep),
+		calc(var(--sx) * 9) calc(var(--sy) * 9) 0 var(--accent-deep),
+		calc(var(--sx) * 10) calc(var(--sy) * 10) 0 var(--accent-deep),
+		calc(var(--sx) * 30) calc(var(--sy) * 40) 60px color-mix(in oklab, #000 60%, transparent);
+}
+
+/* ── Волна смены цвета/темы (lib/circularReveal.ts) ──
+   вне @layer, чтобы ничто не перебило; привязано к .vt-reveal — другие view transitions не трогаем */
+html.vt-reveal::view-transition-old(root),
+html.vt-reveal::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+}
+html.vt-reveal::view-transition-old(root) {
+	z-index: 1;
+}
+html.vt-reveal::view-transition-new(root) {
+	z-index: 2;
+}
+/* reverse: старый снимок сверху и сворачивается в кнопку */
+html.vt-reveal.vt-reverse::view-transition-old(root) {
+	z-index: 2;
+}
+html.vt-reveal.vt-reverse::view-transition-new(root) {
+	z-index: 1;
 }

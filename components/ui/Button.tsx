@@ -16,7 +16,7 @@ const button = cva(
 				primary:
 					'group border border-night-ink/55 text-night-ink hover:border-night-bg hover:bg-night-ink hover:text-night-bg',
 				// полупрозрачная «таблетка», как кнопка «Дизайн» в шапке
-				accent: 'gap-2.5 rounded-full border border-night-ink/25 bg-night-bg/60 px-2.5 text-night-ink backdrop-blur-[10px] hover:border-accent xs:px-3.5',
+				accent: 'gap-2.5 rounded-full border border-night-ink/25 bg-night-bg/80 px-2.5 text-night-ink backdrop-blur-[10px] hover:border-accent xs:px-3.5',
 				// текстовая с иконкой: «Собрать заново», «Листать вниз»
 				ghost: 'gap-2 text-night-ink hover:text-accent',
 			},

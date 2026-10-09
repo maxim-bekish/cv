@@ -23,8 +23,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Цвета
 
 - Основные: `bg`, `bg-raised`, `ink`, `ink-muted`, `line`.
-- Акцент: `accent`, `accent-deep`, `on-accent`.
-- Тёмные секции: `night-bg`, `night-raised`, `night-ink`, `night-soft`, `night-muted`, `night-line`.
+- Акцент: `accent`, `accent-deep`, `accent-shade`, `on-accent`.
+- Тёмные секции: `night-bg`, `night-raised`, `night-deep`, `night-ink`, `night-soft`, `night-muted`, `night-line`.
 - Клавиша Enter: `key-top`, `key-bottom`.
 - Пресеты кнопки «Дизайн»: `preset-orange`, `preset-lime`, `preset-sky`, `preset-pink`, `preset-yellow`, `preset-lilac`, `preset-red`, `preset-mint`.
 - Плюс служебные `transparent`, `current`, `inherit`.

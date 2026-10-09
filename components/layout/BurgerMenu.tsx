@@ -13,8 +13,10 @@ const links = [
 	{ href: '/#contacts', label: 'Контакты' },
 ];
 
-// выезд текста; Base UI ждёт конца перехода у Popup, поэтому у фона та же длительность
-const slide = 'transition-transform duration-500 ease-out motion-reduce:transition-none';
+// выезд текста; Base UI ждёт конца перехода у Popup, поэтому у фона та же длительность.
+// Закрытие — зеркало открытия: ease-in вместо ease-out, иначе уход выглядит рывком
+const slide =
+	'transition-transform duration-500 ease-out data-ending-style:ease-in motion-reduce:transition-none';
 
 export default function BurgerMenu() {
 	const [open, setOpen] = useState(false);
@@ -49,7 +51,7 @@ export default function BurgerMenu() {
 
 			<Dialog.Portal container={container}>
 				{/* чёрный фон — проявляется на месте; подпись внутри него, поэтому проявляется вместе с ним */}
-				<Dialog.Backdrop className='fixed inset-0 z-30 flex flex-col justify-end bg-night-bg transition-opacity duration-500 ease-out motion-reduce:transition-none data-starting-style:opacity-0 data-ending-style:opacity-0 pb-8'>
+				<Dialog.Backdrop className='fixed inset-0 z-30 flex flex-col justify-end bg-night-bg transition-opacity duration-500 ease-out data-ending-style:ease-in motion-reduce:transition-none data-starting-style:opacity-0 data-ending-style:opacity-0 pb-8'>
 					<div className='wrapper-xl  flex w-full justify-between '>
 						<Text color='night-muted' variant='caps'>
 							Минск
