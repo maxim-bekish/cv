@@ -11,14 +11,14 @@ const lineTextTwo = [
 
 export default function About() {
 	return (
-		<section className='pt-(--section-y)'>
+		<section id='about' className='pt-(--section-y)'>
 			<div className='border-y border-line '>
 				<div className='wrapper-xl grid grid-cols-2 tab:grid-cols-4 '>
 					{lineTextTwo.map((item, i) => {
 						return (
 							<div
 								key={item.value}
-								className='py-12 px-7 border-r border-line flex flex-col w-full items-center'>
+								className='py-12 px-7 border-r border-line last:border-r-0 flex flex-col w-full items-center'>
 								<div>
 									<Text variant='stat'>{item.value}</Text>
 									{i === 0 && (
@@ -52,7 +52,7 @@ export default function About() {
 				<div className='flex flex-col gap-8 max-w-270'>
 					<Text variant='lead'>
 						Я фронтенд-разработчик и довожу интерфейс{' '}
-						<em className='underline decoration-accent decoration-[.12em] underline-offset-[.16em]'>
+						<em className='underline decoration-accent decoration-3 underline-offset-[.16em]'>
 							от макета в Figma до продакшена
 						</em>
 						. На MentorAI был единственным фронтендом: сам спроектировал дизайн и сам

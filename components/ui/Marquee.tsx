@@ -2,7 +2,7 @@ import { Text } from './Text';
 import { cn } from '@/lib/utils';
 
 interface MarqueeProps {
-	arr: Array<{ id: string; value: string }>;
+	arr: string[];
 	variant: 'accent' | 'monochrome';
 	// сколько раз повторить список внутри копии — чтобы копия была шире экрана
 	repeat?: number;
@@ -24,8 +24,10 @@ export const Marquee = ({ arr, variant, repeat = 3 }: MarqueeProps) => {
 			{items.map((item, i) => {
 				return (
 					<Text
+						// span, а не h3 по умолчанию: пункты ленты — не заголовки
+						as='span'
 						variant='title'
-						key={`${i}-${item.id}`}
+						key={i}
 						color={
 							variant !== 'accent'
 								? (i % arr.length) % 3 === 0
@@ -34,7 +36,7 @@ export const Marquee = ({ arr, variant, repeat = 3 }: MarqueeProps) => {
 								: 'inherit'
 						}
 						className={cn('pr-13', variant === 'accent' && 'uppercase')}>
-						{item.value}
+						{item}
 					</Text>
 				);
 			})}
