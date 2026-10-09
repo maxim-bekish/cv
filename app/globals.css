@@ -260,3 +260,24 @@
 		calc(var(--sx) * 10) calc(var(--sy) * 10) 0 var(--accent-deep),
 		calc(var(--sx) * 30) calc(var(--sy) * 40) 60px color-mix(in oklab, #000 60%, transparent);
 }
+
+/* ── Волна смены цвета/темы (lib/circularReveal.ts) ──
+   вне @layer, чтобы ничто не перебило; привязано к .vt-reveal — другие view transitions не трогаем */
+html.vt-reveal::view-transition-old(root),
+html.vt-reveal::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+}
+html.vt-reveal::view-transition-old(root) {
+	z-index: 1;
+}
+html.vt-reveal::view-transition-new(root) {
+	z-index: 2;
+}
+/* reverse: старый снимок сверху и сворачивается в кнопку */
+html.vt-reveal.vt-reverse::view-transition-old(root) {
+	z-index: 2;
+}
+html.vt-reveal.vt-reverse::view-transition-new(root) {
+	z-index: 1;
+}
