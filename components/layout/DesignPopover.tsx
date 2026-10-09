@@ -1,7 +1,9 @@
 'use client';
 
 import { Popover } from '@base-ui/react/popover';
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
+import { applyAccent, presetHex, readAccent, resetAccent } from '@/lib/accent';
+import { circularReveal } from '@/lib/circularReveal';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/Button';
 import { Text } from '../ui/Text';
@@ -20,21 +22,49 @@ const mainColors = [
 
 const DEFAULT_COLOR = mainColors[0].code;
 
-// меняем --accent на <html>: от него зависят все accent-классы и --accent-deep
-function applyAccent(value: string | null) {
-	const style = document.documentElement.style;
-	if (value) style.setProperty('--accent', value);
-	else style.removeProperty('--accent');
-}
-
 // кнопка «Дизайн» + попап выбора главного цвета
 export default function DesignPopover() {
 	// код пресета или 'custom' для своего цвета
-	const [color, setColor] = useState(DEFAULT_COLOR);
+	// попап рендерится только открытым, поэтому localStorage можно читать сразу: разметка с сервера не разойдётся
+	const [color, setColor] = useState(() =>
+		typeof window === 'undefined' ? DEFAULT_COLOR : (readAccent()?.code ?? DEFAULT_COLOR),
+	);
 
-	function selectPreset(code: string) {
-		setColor(code);
-		applyAccent(code === DEFAULT_COLOR ? null : `var(--preset-${code})`);
+	// новый цвет раскрывается кругом от нажатого свотча
+	function selectPreset(e: MouseEvent<HTMLButtonElement>, code: string) {
+		// currentTarget сохраняем сразу: после обработчика React его обнуляет
+		const origin = e.currentTarget;
+		circularReveal(() => {
+			setColor(code);
+			if (code === DEFAULT_COLOR) resetAccent();
+			else applyAccent(presetHex(code), code);
+		}, origin);
+	}
+
+	// сброс — наоборот: текущий цвет сворачивается в кнопку
+	function reset(e: MouseEvent<HTMLButtonElement>) {
+		const origin = e.currentTarget;
+		circularReveal(
+			() => {
+				setColor(DEFAULT_COLOR);
+				resetAccent();
+			},
+			origin,
+			{ reverse: true },
+		);
+	}
+
+	// нативный change, а не onChange React (= input): волна только после выбора, не на каждое движение пипетки
+	function customColorRef(input: HTMLInputElement | null) {
+		if (!input) return;
+		const onChange = () => {
+			circularReveal(() => {
+				setColor('custom');
+				applyAccent(input.value);
+			}, input);
+		};
+		input.addEventListener('change', onChange);
+		return () => input.removeEventListener('change', onChange);
 	}
 
 	return (
@@ -65,7 +95,7 @@ export default function DesignPopover() {
 										`dz-sw relative aspect-square min-h-10 cursor-pointer rounded-full  transition-transform duration-200 hover:scale-107 aria-pressed:after:absolute aria-pressed:after:-inset-1 aria-pressed:after:rounded-full 
 										aria-pressed:after:border aria-pressed:after:border-night-ink`,
 									)}
-									onClick={() => selectPreset(c.code)}
+									onClick={(e) => selectPreset(e, c.code)}
 									type='button'
 									data-token={`--preset-${c.code}`}
 									aria-label={c.name}
@@ -78,17 +108,14 @@ export default function DesignPopover() {
 									className='size-8.5 cursor-pointer border-0 bg-transparent p-0'
 									type='color'
 									id='dz-custom'
-									onChange={(e) => {
-										setColor('custom');
-										applyAccent(e.target.value);
-									}}
+									ref={customColorRef}
 								/>
 								Свой цвет
 							</label>
 							<button
 								className='min-h-11 cursor-pointer font-display text-caps uppercase text-night-muted hover:text-night-ink'
 								id='dz-reset'
-								onClick={() => selectPreset(DEFAULT_COLOR)}
+								onClick={reset}
 								type='button'>
 								Сбросить
 							</button>
